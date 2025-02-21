@@ -1,4 +1,4 @@
-const Hospital = require("../models/Hospital");
+  const Hospital = require("../models/Hospital");
 const Admin = require("../models/Admin");
 
 const registerHospital = async (req, res) => {

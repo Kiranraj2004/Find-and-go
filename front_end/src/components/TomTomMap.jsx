@@ -3,6 +3,8 @@ import tt from "@tomtom-international/web-sdk-maps";
 import "@tomtom-international/web-sdk-maps/dist/maps.css";
 import SearchBar from "./SearchBar";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useNavigate } from "react-router-dom"; 
+import AdminDashboard from "./AdminDashboard";
 
 const TomTomMap = () => {
   const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0();
@@ -11,6 +13,7 @@ const TomTomMap = () => {
   const [popup, setPopup] = useState(null);
   const [selectedHospital, setSelectedHospital] = useState(null); // Store selected hospital
   const API_KEY = import.meta.env.VITE_TOM_TOM_API_KEY;
+  const navigate = useNavigate();
 
   useEffect(() => {
     const mapInstance = tt.map({
@@ -157,44 +160,57 @@ const TomTomMap = () => {
     }
   };
 
-  const login= async()=>{
-    if(isAuthenticated==false){
+ 
+
+  const login = async () => {
+    if (!isAuthenticated) {
       loginWithRedirect();
+      return;
     }
-    const email=user.nickname+"@gmail.com";
-     if(isAuthenticated==true){
-      try{
-        const response=await fetch(`http://localhost:8000/api/admin/check/${email}`);
-        
-        const data=await response.json();
-        if(data.exists){
-          console.log("admin exist");
-        }else{
-          console.log("admin does not exist");
+  
+    const email = user.nickname + "@gmail.com";
+    // Hook for navigation
+  
+    if (isAuthenticated) {
+      try {
+        // Check if admin exists
+        const response = await fetch(`http://localhost:8000/api/admin/check/${email}`);
+        const data = await response.json();
+        console.log(data);
+        let adminId;
+        if (data.exists) {
+          console.log("Admin exists");
+          adminId = data.admin._id;
+          const hospitalId = selectedHospital.id;
+
+          navigate("/admin-dashboard", { state: { adminId, email,hospitalId } });
+        } else {
+          console.log("Admin does not exist");
+  
+          // Register admin
           const res = await fetch(`http://localhost:8000/api/admin/register`, {
-            method: "POST", // Specify POST method
-            headers: {
-              "Content-Type": "application/json" // Set JSON header
-            },
-            body: JSON.stringify({ email }) // Send email as JSON in the request body
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email })
           });
-          
-          const data = await res.json(); // Convert response to JSON
-          console.log(data);
-
-          
-          console.log(data+"admin registerd");
-
+  
+          const registerData = await res.json();
+          console.log(registerData);
+          adminId = registerData._id; // Get admin ID from response
+          const hospitalId = selectedHospital.id;
+          navigate("/admin-dashboard", { state: { adminId, email,hospitalId } });
         }
-
-      }
-      catch(error){
+  
+        // Redirect to Admin Dashboard with adminId and email as state
+        
+  
+      } catch (error) {
         console.log(error);
       }
-      
     }
-    
-  }
+  };
+  
+  
   
 
   return (

@@ -19,10 +19,15 @@ const registerAdmin = async (req, res) => {
 };
 
 const checkadmin = async (req, res) => {
-  const {email} = req.body;
+  const email = req.params.email;
+
+  console.log("email1",email);
   try {
     let admin = await Admin.findOne({ email });
-    res.json({ exists: !!admin});
+    console.log(admin);
+    res.json({ exists: !!admin,
+      admin: admin
+    });
   } catch (error) {
     console.error("Error checking hospital:", error);
     res.status(500).json({ error: "Internal server error" });
