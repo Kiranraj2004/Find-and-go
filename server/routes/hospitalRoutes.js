@@ -14,6 +14,6 @@ router.put("/update/:hospitalId", updateHospitalDetails);
 
 router.get("/my-hospitals/:adminEmail", getHospitalsByAdmin);
 
-router.post("/register/:email", registerHospital); // Ensure this function exists
+router.post("/register", registerHospital); // Ensure this function exists
 
 module.exports = router;

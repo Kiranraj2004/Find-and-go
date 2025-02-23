@@ -4,7 +4,6 @@ import "@tomtom-international/web-sdk-maps/dist/maps.css";
 import SearchBar from "./SearchBar";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom"; 
-import AdminDashboard from "./AdminDashboard";
 
 const TomTomMap = () => {
   const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0();
@@ -49,11 +48,16 @@ const TomTomMap = () => {
 
             if (poiData.results && poiData.results.length > 0) {
               const place = poiData.results[0];
+              const object=poiData.results[0];
+              // console.log("object");
+              // console.log(object);
               const isRegistered = await checkHospitalInDatabase(place.id);
+
   
         setSelectedHospital({
           id: place.id, 
           name: place.poi.name,
+          object: object,
           isRegistered, // New field to determine which button to show
         });
            
@@ -76,7 +80,8 @@ const TomTomMap = () => {
               setMarker(newMarker);
               setPopup(newPopup);
             } else {
-              setSelectedHospital({ id: null, name: "No hospital found" , address:""});
+              setSelectedHospital({ id: null, name: "No hospital found" ,
+                object: null, address:""});
 
               // Show a message for creating a hospital
               if (popup) popup.remove();
@@ -127,12 +132,16 @@ const TomTomMap = () => {
         const { lat, lon } = data.results[0].position;
         const placeName = data.results[0].poi?.name || data.results[0].address.freeformAddress;
         const placeId = data.results[0].id || null;
+        const object=data.results[0];
+        console.log("object");
+        console.log(object);
         
         const isRegistered = await checkHospitalInDatabase(placeId);
   
         setSelectedHospital({
           id: placeId,
           name: placeName,
+          object: object, // Added new field to store the whole object of the searched place
           isRegistered, // New field to determine which button to show
         });
   
@@ -176,14 +185,28 @@ const TomTomMap = () => {
         // Check if admin exists
         const response = await fetch(`http://localhost:8000/api/admin/check/${email}`);
         const data = await response.json();
-        console.log(data);
+        // console.log(data);
         let adminId;
         if (data.exists) {
           console.log("Admin exists");
+          console.log(selectedHospital.object);
+          const result = selectedHospital.object;
           adminId = data.admin._id;
-          const hospitalId = selectedHospital.id;
+          const hospitalId = result.id;
+      const name = result.poi.name;
+      const address = [
+        result.address?.streetName,
+        result.address?.freeformAddress,
+        result.address?.countrySubdivisionName,
+        result.address?.country
+      ].filter(Boolean).join(", ");
 
-          navigate("/admin-dashboard", { state: { adminId, email,hospitalId } });
+     console.log(address);
+     console.log(name);
+     console.log(hospitalId);
+
+
+          navigate("/admin-dashboard", { state: {  hospitalId,name,address,email } });
         } else {
           console.log("Admin does not exist");
   
@@ -195,10 +218,18 @@ const TomTomMap = () => {
           });
   
           const registerData = await res.json();
-          console.log(registerData);
-          adminId = registerData._id; // Get admin ID from response
-          const hospitalId = selectedHospital.id;
-          navigate("/admin-dashboard", { state: { adminId, email,hospitalId } });
+          const result = selectedHospital.object;
+          const hospitalId = result.id;
+      const name = result.poi.name;
+      const address = [
+        result.address?.streetName,
+        result.address?.freeformAddress,
+        result.address?.countrySubdivisionName,
+        result.address?.country
+      ].filter(Boolean).join(", ");
+
+
+          navigate("/admin-dashboard", { state: {  hospitalId,name,address,email } });
         }
   
         // Redirect to Admin Dashboard with adminId and email as state
@@ -250,3 +281,8 @@ const TomTomMap = () => {
 };
 
 export default TomTomMap;
+
+
+
+
+

@@ -3,18 +3,20 @@ const Admin = require("../models/Admin");
 
 const registerHospital = async (req, res) => {
     try {
-      const { tomtomId, name, address, adminEmail } = req.body;
+      const { hospitalId, name, address, email } = req.body;
+      console.log(hospitalId,"name: ", name,"add :", address, "email: ", email);
   
-      if (!tomtomId || !name || !address || !adminEmail) {
+      if (!hospitalId || !name || !address || !email) {
         return res.status(400).json({ message: "All fields are required" });
       }
   
-      const existingHospital = await Hospital.findOne({ tomtomId });
+      const existingHospital = await Hospital.findOne({ hospitalId });
       if (existingHospital) return res.status(400).json({ message: "Hospital already exists" });
   
-      const admin = await Admin.findOne({ email: adminEmail });
+      const admin = await Admin.findOne({ email: email });
       if (!admin) return res.status(404).json({ message: "Admin not found" });
-  
+      const tomtomId=hospitalId;
+
       const hospital = new Hospital({ tomtomId, name, address, admin: admin._id });
       await hospital.save();
   

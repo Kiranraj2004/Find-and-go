@@ -22,8 +22,8 @@ const SearchBar = ({ onSelectLocation }) => {
         `https://api.tomtom.com/search/2/search/${modifiedQuery}.json?key=${API_KEY}&countrySet=IN&maxFuzzyLevel=2&typeahead=true&limit=5&language=en-US`
       );
 
-      console.log("search");
-      console.log(response);
+      // console.log("search");
+      // console.log(response);
 
       // Extract suggestions with POI name and address details
       const results = response.data.results.map((result) => {
