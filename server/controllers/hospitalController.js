@@ -3,19 +3,22 @@ const Admin = require("../models/Admin");
 
 const registerHospital = async (req, res) => {
     try {
+      // console.log("registerHospital");
       const { hospitalId, name, address, email } = req.body;
-      console.log(hospitalId,"name: ", name,"add :", address, "email: ", email);
+      // console.log(hospitalId,"name: ", name,"add :", address, "email: ", email);
   
       if (!hospitalId || !name || !address || !email) {
         return res.status(400).json({ message: "All fields are required" });
       }
-  
-      const existingHospital = await Hospital.findOne({ hospitalId });
-      if (existingHospital) return res.status(400).json({ message: "Hospital already exists" });
-  
+
       const admin = await Admin.findOne({ email: email });
       if (!admin) return res.status(404).json({ message: "Admin not found" });
       const tomtomId=hospitalId;
+  
+      const existingHospital = await Hospital.findOne({ tomtomId: tomtomId});
+      if (existingHospital) return res.status(400).json({ message: "Hospital already exists" });
+  
+      
 
       const hospital = new Hospital({ tomtomId, name, address, admin: admin._id });
       await hospital.save();
@@ -34,14 +37,14 @@ const registerHospital = async (req, res) => {
   const getHospitalsByAdmin = async (req, res) => {
     try {
       const { adminEmail } = req.params;
-      console.log(adminEmail);
+      // console.log(adminEmail);
       
       const admin = await Admin.findOne({ email: adminEmail }).populate("hospitals");
       if (!admin) return res.status(404).json({ message: "Admin not found" });
   
       res.status(200).json({ hospitals: admin.hospitals });
     } catch (error) {
-      console.error("Error fetching hospitals:", error);
+      // console.error("Error fetching hospitals:", error);
       res.status(500).json({ message: "Server error" });
     }
   };
@@ -90,9 +93,12 @@ const registerHospital = async (req, res) => {
 
    const checkhospital=async (req, res) => {
     const hospitalId = req.params.id;
+    console.log("hospitalId",hospitalId);
     try {
-      const hospital = await Hospital.findOne({ hospitalId }); // Assuming MongoDB/Mongoose
-      res.json({ exists: !!hospital });
+      const hospital = await Hospital.find({ hospitalId });
+       // Assuming MongoDB/Mongoose
+       console.log("hospital",hospital);
+     return res.json({ exists: !!hospital });
     } catch (error) {
       console.error("Error checking hospital:", error);
       res.status(500).json({ error: "Internal server error" });

@@ -1,5 +1,5 @@
 // ... other imports remain the same
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 const AdminDashboard = () => {
@@ -8,8 +8,8 @@ const AdminDashboard = () => {
   const { hospitalId, name, address, email } = location.state || {};
 
   const [hospitals, setHospitals] = useState([]);
-  const [hospitalName, setHospitalName] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const navigate=useNavigate();
 
   // Separate useEffect for debugging current state
   useEffect(() => {
@@ -85,6 +85,14 @@ const AdminDashboard = () => {
   const registerHospital = async () => {
     try {
       console.log("Registering hospital with:", { hospitalId, name, address, email });
+      const tmp= await fetch(`http://localhost:8000/api/hospital/check/${hospitalId}`);
+      const data1 = await tmp.json();
+      
+      console.log(data1);
+      if(data1.exists){
+        alert("Hospital ID already exists");
+        return;
+      }
       const res = await fetch(`http://localhost:8000/api/hospital/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -93,11 +101,7 @@ const AdminDashboard = () => {
 
       const data = await res.json();
       console.log("Registration response:", data);
-
-      if (data.success) {
-        setHospitals(prevHospitals => [...prevHospitals, data.hospital]);
-        setHospitalName("");
-      }
+        fetchAdminAndHospitals();
     } catch (error) {
       console.error("Error registering hospital:", error);
     }
@@ -193,7 +197,18 @@ const AdminDashboard = () => {
         ) : (
           <p className="text-gray-500">No hospitals registered.</p>
         )}
+
+
+        <button
+        className="mt-6 bg-gray-800 hover:bg-gray-900 text-white px-4 py-2 rounded-lg"
+        onClick={() => navigate(-1)}
+       >
+        Go back
+      </button>
       </div>
+
+     
+     
     </div>
   );
 };

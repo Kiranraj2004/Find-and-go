@@ -3,7 +3,7 @@ const Admin = require("../models/Admin");
 
 const registerAdmin = async (req, res) => {
   const { email } = req.body;
-  console.log(email);
+  // console.log(email);
 
   try {
     let admin = await Admin.findOne({ email });
@@ -21,10 +21,10 @@ const registerAdmin = async (req, res) => {
 const checkadmin = async (req, res) => {
   const email = req.params.email;
 
-  console.log("email1",email);
+  // console.log("email1",email);
   try {
     let admin = await Admin.findOne({ email });
-    console.log(admin);
+    // console.log(admin);
     res.json({ exists: !!admin,
       admin: admin
     });

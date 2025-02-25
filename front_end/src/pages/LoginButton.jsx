@@ -15,14 +15,21 @@ const AuthButton = () => {
       </button>
 
       {isDropdownOpen && (
-        <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-300 rounded-md shadow-lg">
-          <div className="px-4 py-2 text-gray-700">My Profile</div>
+        <div className="absolute right-0 mt-10 w-30 bg-white border border-gray-300 rounded-lg shadow-lg">
+        
           <button
             onClick={() => logout({ returnTo: window.location.origin })}
-            className="w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100"
+            className="w-full text-left px-4 py-2 bg-red-600 text-white hover:bg-red-300"
           >
             Log out
           </button>
+          <button
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            className="w-full text-left px-4 py-2  bg-black text-white hover:bg-slate-600"
+          >
+            close
+          </button>
+
         </div>
       )}
     </div>

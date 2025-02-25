@@ -177,7 +177,7 @@ const TomTomMap = () => {
       return;
     }
   
-    const email = user.nickname + "@gmail.com";
+    const email = user.email;
     // Hook for navigation
   
     if (isAuthenticated) {
