@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import {BrowserRouter , Route, Routes } from 'react-router-dom';
 
 
 import LandingPage from './pages/LandingPage';
@@ -9,14 +9,14 @@ import ViewDetails from './pages/ViewDetails';
 
 const App = () => {
   return (
-    <Router>
+    <BrowserRouter>
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/admin-dashboard" element={<AdminDashboard></AdminDashboard>} />
         <Route path="/doctor-dashboard" element={<DoctorDashboard></DoctorDashboard>}/>
         <Route path="/view-details/:hospitalId" element={<ViewDetails />} />
         </Routes>
-    </Router>
+    </BrowserRouter>
   );
 };
 
