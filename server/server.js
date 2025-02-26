@@ -19,14 +19,14 @@ app.use(express.json()); // Properly parse JSON requests
 connectDB();
 
 
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "https://find-and-go.vercel.app/");
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+// app.use((req, res, next) => {
+//   res.header("Access-Control-Allow-Origin", "https://find-and-go.vercel.app/");
+//   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+//   res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
   
 
-  next();
-});
+//   next();
+// });
 
 app.use((req, res, next) => {
     console.log(`Incoming ${req.method} request to ${req.url}`);
