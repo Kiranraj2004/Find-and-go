@@ -11,10 +11,11 @@ const DoctorDashboard = () => {
   const [specialization, setSpecialization] = useState("");
   const [message, setMessage] = useState("");
   const [registeredHospitals, setRegisteredHospitals] = useState([]);
+  const url=import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
     if (isAuthenticated && user?.email) {
-      axios.get(`http://localhost:8000/api/doctor/check/${user.email}`)
+      axios.get(`${url}/api/doctor/check/${user.email}`)
         .then((res) => {
           if (res.data.exists) {
             setDoctor(res.data.doctor);
@@ -29,7 +30,7 @@ const DoctorDashboard = () => {
 
   const fetchDoctorHospitals = async (doctorId) => {
     try {
-      const res = await axios.get(`http://localhost:8000/api/doctor-hospitals/get/${doctorId}`);
+      const res = await axios.get(`${url}/api/doctor-hospitals/get/${doctorId}`);
       setRegisteredHospitals(res.data.hospitals);
     } catch (error) {
       console.error("Error fetching doctor's hospitals:", error);
@@ -38,7 +39,7 @@ const DoctorDashboard = () => {
 
   const handleRegister = async () => {
     try {
-      const res = await axios.post("http://localhost:8000/api/doctor/register", { name, email });
+      const res = await axios.post(`${url}/api/doctor/register`, { name, email });
       setDoctor(res.data.doctor);
       fetchDoctorHospitals(res.data.doctor._id);
     } catch (error) {
@@ -50,7 +51,7 @@ const DoctorDashboard = () => {
     e.preventDefault();
     try {
       const email = user.email;
-      const response = await axios.post("http://localhost:8000/api/doctor-hospitals/register-hospital", {
+      const response = await axios.post(`${url}/api/doctor-hospitals/register-hospital`, {
         email,
         hospitalId,
         specialization
@@ -70,7 +71,7 @@ const DoctorDashboard = () => {
 
   const toggleAvailability = async (hospitalDoctorId) => {
     try {
-      const res = await axios.put(`http://localhost:8000/api/doctor-hospitals/update-availability/${hospitalDoctorId}`);
+      const res = await axios.put(`${url}/api/doctor-hospitals/update-availability/${hospitalDoctorId}`);
       setRegisteredHospitals((prevHospitals) =>
         prevHospitals.map((hospital) =>
           hospital._id === hospitalDoctorId

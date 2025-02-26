@@ -10,11 +10,13 @@ const AdminDashboard = () => {
   const [hospitals, setHospitals] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const navigate=useNavigate();
+  const url=import.meta.env.VITE_BACKEND_URL;
 
   // Separate useEffect for debugging current state
   useEffect(() => {
     // console.log("Current hospitals state:", hospitals);
   }, [hospitals]);
+
 
   useEffect(() => {
     if (email) {
@@ -28,7 +30,7 @@ const AdminDashboard = () => {
   const fetchAdminAndHospitals = async () => {
     try {
       // console.log("Starting admin check...");
-      const adminResponse = await fetch(`http://localhost:8000/api/admin/check/${email}`);
+      const adminResponse = await fetch(`${url}/api/admin/check/${email}`);
       const adminData = await adminResponse.json();
       // console.log("Admin check response:", adminData);
 
@@ -38,7 +40,7 @@ const AdminDashboard = () => {
         setAdminId(currentAdminId);
 
         // console.log("Fetching hospitals for email:", email);
-        const hospitalsResponse = await fetch(`http://localhost:8000/api/hospital/my-hospitals/${email}`);
+        const hospitalsResponse = await fetch(`${url}/api/hospital/my-hospitals/${email}`);
         
         // Log the raw response
         // console.log("Raw hospitals response:", hospitalsResponse);
@@ -85,7 +87,7 @@ const AdminDashboard = () => {
   const registerHospital = async () => {
     try {
       console.log("Registering hospital with:", { hospitalId, name, address, email });
-      const tmp= await fetch(`http://localhost:8000/api/hospital/check/${hospitalId}`);
+      const tmp= await fetch(`${url}/api/hospital/check/${hospitalId}`);
       const data1 = await tmp.json();
       
       console.log(data1);
@@ -93,7 +95,7 @@ const AdminDashboard = () => {
         alert("Hospital ID already exists");
         return;
       }
-      const res = await fetch(`http://localhost:8000/api/hospital/register`, {
+      const res = await fetch(`${url}/api/hospital/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ hospitalId, name, address, email }),

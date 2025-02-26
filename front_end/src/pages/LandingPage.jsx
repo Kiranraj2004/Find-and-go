@@ -13,6 +13,7 @@ const LandingPage = () => {
   const [selectedLocation, setSelectedLocation] = useState(null);
   const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0();
   const navigate=useNavigate();
+  const url=import.meta.env.VITE_BACKEND_URL;
 
   const loginadmin = async () => {
     if (!isAuthenticated) {
@@ -26,7 +27,7 @@ const LandingPage = () => {
     if (isAuthenticated) {
       try {
         // Check if admin exists
-        const response = await fetch(`http://localhost:8000/api/admin/check/${email}`);
+        const response = await fetch(`${url}/api/admin/check/${email}`);
         const data = await response.json();
         // console.log(data);
         let adminId;
@@ -43,7 +44,7 @@ const LandingPage = () => {
           console.log("Admin does not exist");
   
           // Register admin
-          const res = await fetch(`http://localhost:8000/api/admin/register`, {
+          const res = await fetch(`${url}/api/admin/register`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email })

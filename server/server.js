@@ -9,7 +9,7 @@ const doctorRoutes=require("./routes/doctorRoutes");
 const doctorhospitalRouter=require("./routes/doctorhospitalRoutes");
 
 const app = express();
-const PORT = 8000;
+const PORT =process.env.PORT||8000;
 
 // Middleware
 app.use(cors());

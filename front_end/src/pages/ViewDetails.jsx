@@ -8,6 +8,7 @@ const ViewDetails = () => {
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const url=import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
     if (!hospitalId) {
@@ -22,7 +23,7 @@ const ViewDetails = () => {
         setLoading(true);
         
         // Fetch hospital details
-        const hospitalRes = await fetch(`http://localhost:8000/api/hospital/check/${hospitalId}`);
+        const hospitalRes = await fetch(`${url}/api/hospital/check/${hospitalId}`);
         const hospitalData = await hospitalRes.json();
         
         if (hospitalData.exists) {
@@ -32,7 +33,7 @@ const ViewDetails = () => {
         }
         
         // Fetch doctors for the hospital
-        const doctorsRes = await fetch(`http://localhost:8000/api/doctor-hospitals/getalldoctors/${hospitalId}`);
+        const doctorsRes = await fetch(`${url}/api/doctor-hospitals/getalldoctors/${hospitalId}`);
         const doctorsData = await doctorsRes.json();
         
         if (doctorsData.success) {
