@@ -20,7 +20,7 @@ connectDB();
 
 
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "https://find-and-go-2.onrender.com");
+  res.header("Access-Control-Allow-Origin", "https://find-and-go.vercel.app/");
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
   res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
   
