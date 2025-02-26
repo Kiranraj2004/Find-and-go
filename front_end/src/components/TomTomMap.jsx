@@ -262,7 +262,7 @@ const TomTomMap = () => {
     {selectedHospital.isRegistered ? (
       <button
         className="mt-4 px-5 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-all"
-        onClick={() => navigate("/view-details", { state: { hospitalId: selectedHospital.id } })}
+        onClick={() => navigate(`/view-details/${selectedHospital.id}`)}
       >
         View Details
       </button>

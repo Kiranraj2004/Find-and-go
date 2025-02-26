@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
+
 
 const ViewDetails = () => {
   const location = useLocation();
-  const { hospitalId } = location.state || {}; // Get hospitalId from navigation state
+  const { hospitalId } = useParams(); // Get hospitalId from the URL
   const [hospital, setHospital] = useState(null);
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
