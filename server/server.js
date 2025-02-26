@@ -28,6 +28,22 @@ app.use((req, res, next) => {
   next();
 });
 
+
+
+// Replace your current CORS setup with this
+app.use(cors({
+  origin: [
+    'https://find-and-go.vercel.app',
+    'https://find-and-go.vercel.app/', // Include both with and without trailing slash
+    // Add more origins if needed, like localhost for development
+    'http://localhost:5173',
+    'http://localhost:3000'
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  credentials: true, // If you're using cookies or authentication
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use((req, res, next) => {
     console.log(`Incoming ${req.method} request to ${req.url}`);
     next();
