@@ -113,7 +113,7 @@ const TomTomMap = () => {
     try {
       const response = await fetch(`http://localhost:8000/api/hospital/check/${hospitalId}`);
       const data = await response.json();
-      
+      console.log(data);
       return data.exists; // Assuming API returns { exists: true/false }
     } catch (error) {
       console.error("Error checking hospital:", error);
@@ -261,7 +261,7 @@ const TomTomMap = () => {
     {selectedHospital.isRegistered ? (
       <button
         className="mt-4 px-5 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-all"
-        onClick={() => console.log("View Hospital Details")}
+        onClick={() => navigate("/view-details", { state: { hospitalId: selectedHospital.id } })}
       >
         View Details
       </button>

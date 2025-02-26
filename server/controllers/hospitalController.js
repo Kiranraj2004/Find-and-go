@@ -1,5 +1,6 @@
   const Hospital = require("../models/Hospital");
 const Admin = require("../models/Admin");
+const HospitalDoctor = require("../models/HospitalDoctor");
 
 const registerHospital = async (req, res) => {
     try {
@@ -72,35 +73,44 @@ const registerHospital = async (req, res) => {
 
   const deleteHospital = async (req, res) => {
     try {
-      const { hospitalId } = req.params;
-  
-      const hospital = await Hospital.findByIdAndDelete(hospitalId);
-      if (!hospital) return res.status(404).json({ message: "Hospital not found" });
-  
-      // Remove hospital reference from the admin
-      await Admin.updateOne(
-        { _id: hospital.admin },
-        { $pull: { hospitals: hospitalId } }
-      );
-  
-      res.status(200).json({ message: "Hospital deleted successfully" });
+        const { hospitalId } = req.params;
+
+        // Find and delete the hospital
+        const hospital = await Hospital.findByIdAndDelete(hospitalId);
+        if (!hospital) {
+            return res.status(404).json({ message: "Hospital not found" });
+        }
+
+        // Remove hospital reference from the admin
+        await Admin.updateOne(
+            { _id: hospital.admin },
+            { $pull: { hospitals: hospitalId } }
+        );
+
+        // Delete all doctors registered under this hospital
+        await HospitalDoctor.deleteMany({ hospitalId });
+
+        res.status(200).json({ message: "Hospital and its doctors deleted successfully" });
     } catch (error) {
-      console.error("Error deleting hospital:", error);
-      res.status(500).json({ message: "Server error" });
+        console.error("Error deleting hospital:", error);
+        res.status(500).json({ message: "Server error" });
     }
-  };
+};
+
+
 
 
    const checkhospital=async (req, res) => {
     const hospitalId = req.params.id;
-    console.log("hospitalId",hospitalId);
+    // console.log("hospitalId",hospitalId);
     try {
-      const hospital = await Hospital.find({ hospitalId });
+      const hospital = await Hospital.find({tomtomId: hospitalId });
        // Assuming MongoDB/Mongoose
-       console.log("hospital",hospital);
-     return res.json({ exists: !!hospital });
+      //  console.log("hospital",hospital);
+       if(hospital.length==0) return res.json({ exists: false,hospitals:hospital });
+     return res.json({ exists: true,hospitals:hospital });
     } catch (error) {
-      console.error("Error checking hospital:", error);
+      // console.error("Error checking hospital:", error);
       res.status(500).json({ error: "Internal server error" });
     }
   }

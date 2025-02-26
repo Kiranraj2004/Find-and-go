@@ -49,6 +49,7 @@ const DoctorDashboard = () => {
   const handleHospitalRegister = async (e) => {
     e.preventDefault();
     try {
+      const email = user.email;
       const response = await axios.post("http://localhost:8000/api/doctor-hospitals/register-hospital", {
         email,
         hospitalId,

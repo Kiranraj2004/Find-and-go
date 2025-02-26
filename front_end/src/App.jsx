@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
 import AdminDashboard from './components/AdminDashboard';
 import DoctorDashboard from './pages/DoctorDashboard';
+import ViewDetails from './pages/ViewDetails';
 
 const App = () => {
   return (
@@ -11,6 +12,7 @@ const App = () => {
         <Route path="/" element={<LandingPage />} />
         <Route path="/admin-dashboard" element={<AdminDashboard></AdminDashboard>} />
         <Route path="/doctor-dashboard" element={<DoctorDashboard></DoctorDashboard>}/>
+        <Route path="/view-details" element={<ViewDetails></ViewDetails>} />
       </Routes>
     </Router>
   );

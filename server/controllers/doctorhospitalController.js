@@ -85,12 +85,40 @@ const getDoctorhospitals = async (req, res) => {
       }
 }
 
+const getAllDoctors = async (req, res) => {
+  try {
+      const { hospitalId } = req.params; // This is the TomTom ID
+      console.log("TomTom Hospital ID:", hospitalId);
+      
+      // First, find the hospital with this TomTom ID
+      const hospital = await Hospital.findOne({ tomtomId: hospitalId });
+      
+      if (!hospital) {
+          return res.status(404).json({ message: "Hospital not found" });
+      }
+      
+      console.log("Found hospital with MongoDB ID:", hospital._id);
+      
+      // Now use the MongoDB ID to find all doctors
+      const doctors = await HospitalDoctor.find({ hospitalId: hospital._id }).populate("doctor");
+      
+      if (!doctors.length) {
+          return res.status(404).json({ message: "No doctors found for this hospital" });
+      }
+      
+      res.status(200).json({ success: true, doctors });
+  } catch (error) {
+      console.error("Error fetching doctors:", error);
+      res.status(500).json({ message: "Server error" });
+  }
+};
+
 const updateAvilableStatus =async (req, res) => {
     try{
         const hospitalDoctor = await HospitalDoctor.findById(req.params.Id);
         console.log(req.params.Id);
     
-    if (!hospitalDoctor) {
+    if (!hospitalDoctor) {x
         return res.status(404).json({ success: false, message: "Doctor-hospital record not found" });
       }
       hospitalDoctor.availability.currentStatus = hospitalDoctor.availability.currentStatus === "Available" ? "Not Available" : "Available";
@@ -104,4 +132,4 @@ const updateAvilableStatus =async (req, res) => {
 }
 
 
-module.exports = { registerDoctorToHospital,getDoctorhospitals ,updateAvilableStatus };
+module.exports = { registerDoctorToHospital,getDoctorhospitals ,updateAvilableStatus ,getAllDoctors};
