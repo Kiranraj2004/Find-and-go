@@ -13,6 +13,7 @@ const TomTomMap = () => {
   const [selectedHospital, setSelectedHospital] = useState(null); // Store selected hospital
   const API_KEY = import.meta.env.VITE_TOM_TOM_API_KEY;
   const navigate = useNavigate();
+  const url1=import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
     const mapInstance = tt.map({
@@ -111,7 +112,7 @@ const TomTomMap = () => {
 
   const checkHospitalInDatabase = async (hospitalId) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/hospital/check/${hospitalId}`);
+      const response = await fetch(`${url1}/api/hospital/check/${hospitalId}`);
       const data = await response.json();
       console.log(data);
       return data.exists; // Assuming API returns { exists: true/false }
@@ -183,7 +184,7 @@ const TomTomMap = () => {
     if (isAuthenticated) {
       try {
         // Check if admin exists
-        const response = await fetch(`http://localhost:8000/api/admin/check/${email}`);
+        const response = await fetch(`${url1}/api/admin/check/${email}`);
         const data = await response.json();
         // console.log(data);
         let adminId;
@@ -211,7 +212,7 @@ const TomTomMap = () => {
           console.log("Admin does not exist");
   
           // Register admin
-          const res = await fetch(`http://localhost:8000/api/admin/register`, {
+          const res = await fetch(`${url1}/api/admin/register`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email })
