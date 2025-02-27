@@ -73,7 +73,7 @@ const AdminDashboard = () => {
 
   const deleteHospital = async (hospitalId) => {
     try {
-      await fetch(`http://localhost:8000/api/hospital/delete/${hospitalId}`, {
+      await fetch(`${url}/api/hospital/delete/${hospitalId}`, {
         method: "DELETE",
       });
       setHospitals(prevHospitals => 
