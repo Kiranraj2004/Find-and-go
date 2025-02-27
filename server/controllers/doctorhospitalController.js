@@ -131,5 +131,26 @@ const updateAvilableStatus =async (req, res) => {
     }
 }
 
+const deletedoctorfromhospital=async(req, res) => {
+  try {
+      const { hospitalId, doctorId } = req.params;
+      console.log("TomTom Hospital ID:", hospitalId);
 
-module.exports = { registerDoctorToHospital,getDoctorhospitals ,updateAvilableStatus ,getAllDoctors};
+      // Find and delete the doctor from the hospital
+      const deletedEntry = await HospitalDoctor.findOneAndDelete({ _id: hospitalId });
+      console.log(deletedEntry);
+
+      if (!deletedEntry) {
+          return res.status(404).json({ message: "Doctor not found in this hospital" });
+      }
+
+      res.status(200).json({ message: "Doctor removed from hospital successfully" });
+  } catch (error) {
+      console.error("Error deleting doctor from hospital:", error);
+      res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+
+
+module.exports = { registerDoctorToHospital,getDoctorhospitals ,updateAvilableStatus ,getAllDoctors,deletedoctorfromhospital};

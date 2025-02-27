@@ -84,6 +84,31 @@ const DoctorDashboard = () => {
     }
   };
 
+  const deleteDoctorFromHospital = async (hospitalId, doctorId) => {
+    try {
+        const response = await fetch(`${url}/api/doctor-hospitals/delete/${hospitalId}/${doctorId}`, {
+            method: "DELETE",
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to delete doctor from hospital");
+        }
+
+        // Update state to reflect the removal
+        
+        setRegisteredHospitals((prevHospitals) =>
+            prevHospitals.filter((hospital) => hospital._id!== hospitalId)
+        );
+
+        console.log("Doctor removed successfully");
+    } catch (error) {
+        console.error("Error deleting doctor from hospital:", error);
+    }
+};
+
+
+
+
   if (!isAuthenticated) return <p>Please login first</p>;
 
   if (!doctor) {
@@ -162,6 +187,13 @@ const DoctorDashboard = () => {
             >
               Toggle Availability
             </button>
+            <button
+                className="bg-red-600 text-white px-4 py-2 mt-2 ml-72"
+                onClick={() => deleteDoctorFromHospital(hospital._id, doctor._id)}
+            >
+                Delete
+            </button>
+
           </div>
         ))}
       </div>
