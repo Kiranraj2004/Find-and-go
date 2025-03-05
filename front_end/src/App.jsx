@@ -7,15 +7,17 @@ import DoctorDashboard from './pages/DoctorDashboard';
 import ViewDetails from './pages/ViewDetails';
 
 const App = () => {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/admin-dashboard" element={<AdminDashboard></AdminDashboard>} />
-        <Route path="/doctor-dashboard" element={<DoctorDashboard></DoctorDashboard>}/>
-        <Route path="/view-details/:hospitalId" element={<ViewDetails />} />
+   return (
+    <div className="min-h-screen    ">
+      <Router>
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/admin-dashboard" element={<AdminDashboard></AdminDashboard>} />
+          <Route path="/doctor-dashboard" element={<DoctorDashboard></DoctorDashboard>}/>
+          <Route path="/view-details/:hospitalId" element={<ViewDetails />} />
         </Routes>
-    </Router>
+      </Router>
+    </div>
   );
 };
 

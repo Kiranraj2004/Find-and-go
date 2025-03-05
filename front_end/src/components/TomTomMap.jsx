@@ -4,6 +4,12 @@ import "@tomtom-international/web-sdk-maps/dist/maps.css";
 import SearchBar from "./SearchBar";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom"; 
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Eye, ClipboardPlus, Building2 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+
+
 
 const TomTomMap = () => {
   const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0();
@@ -246,37 +252,64 @@ const TomTomMap = () => {
   
 
   return (
-    <div className="flex h-screen w-full pt-5 p-10 top-0 bottom-3">
+    <div className="flex h-screen w-full p-10 pt-5 overflow-hidden">
       {/* Main Map Container */}
-      <div className={`flex-1 transition-all duration-300 ${selectedHospital ? "w-3/4" : "w-full"}`}>
+      <motion.div 
+        className="flex-1 relative rounded-xl overflow-hidden shadow-lg"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 2 }}
+        layout
+      >
         <SearchBar onSelectLocation={handleSearch} />
-        <div id="map" className=" h-full  "></div>
-      </div>
-
-      {/* Right Sidebar for Hospital Details (Hidden Initially) */}
-      {selectedHospital && (
-  <div className="w-1/4 p-10 absolute top-80 right-6 bg-white bg-opacity-60 shadow-lg rounded-lg mt-1 overflow-y-auto z-50 transition-all duration-300">
-    <h2 className="text-xl font-semibold mb-4">Hospital Details</h2>
-    <p className="text-lg"><strong>Name:</strong> {selectedHospital.name}</p>
-    
-    {selectedHospital.isRegistered ? (
-      <button
-        className="mt-4 px-5 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-all"
-        onClick={() => navigate(`/view-details/${selectedHospital.id}`)}
-      >
-        View Details
-      </button>
-    ) : (
-      <button
-        className="mt-4 px-5 py-2 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition-all"
-        onClick={login}
-      >
-        Register Hospital
-      </button>
-    )}
-  </div>
-)}
-
+        <div id="map" className="h-full w-full" />
+      </motion.div>
+  
+      {/* Right Sidebar for Hospital Details */}
+      <AnimatePresence>
+        {selectedHospital && (
+          <motion.div
+            initial={{ x: 300, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: 300, opacity: 0 }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            className="w-1/4 ml-4"
+          >
+            <Card className="sticky top-5">
+              <CardHeader>
+                <CardTitle>Hospital Details</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="flex items-center space-x-2">
+                    <Building2 className="h-5 w-5 text-muted-foreground" />
+                    <p className="text-lg font-medium">{selectedHospital.name}</p>
+                  </div>
+                  
+                  {selectedHospital.isRegistered ? (
+                    <Button 
+                      className="w-full"
+                      onClick={() => navigate(`/view-details/${selectedHospital.id}`)}
+                    >
+                      <Eye className="mr-2 h-4 w-4" />
+                      View Details
+                    </Button>
+                  ) : (
+                    <Button 
+                      variant="default" 
+                      className="w-full bg-green-600 hover:bg-green-700"
+                      onClick={login}
+                    >
+                      <ClipboardPlus className="mr-2 h-4 w-4" />
+                      Register Hospital
+                    </Button>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

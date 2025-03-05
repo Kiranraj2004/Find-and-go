@@ -1,6 +1,28 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+
+import { useLocation,useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
+
+import { AnimatePresence, motion } from "framer-motion"
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import {Alert, AlertTitle, AlertDescription}from "@/components/ui/alert";
+import { Separator } from "@radix-ui/react-separator";
+import { Avatar,AvatarFallback,AvatarImage } from "@radix-ui/react-avatar";
+
+import { 
+  Hospital, 
+  User, 
+  Stethoscope, 
+  Check, 
+  X 
+} from 'lucide-react';
 
 
 const ViewDetails = () => {
@@ -11,6 +33,7 @@ const ViewDetails = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const url=import.meta.env.VITE_BACKEND_URL;
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!hospitalId) {
@@ -64,89 +87,127 @@ const ViewDetails = () => {
   if (!hospital) return <div className="p-10">Hospital information not available</div>;
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
+    <div className="container mx-auto px-4 py-8">
+      {/* Error Toast */}
+      {error && (
+        <motion.div
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -50 }}
+          className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-md"
+        >
+          <Alert variant="destructive" onClose={() => setError(null)}>
+            <X className="h-4 w-4" />
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        </motion.div>
+      )}
+
       {/* Hospital Details Card */}
-      <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
-        <h1 className="text-3xl font-bold text-gray-800">{hospital.name}</h1>
-        <div className="mt-4 text-gray-600">
-          <p className="text-lg">{hospital.address}</p>
-          <p className="mt-2">
-            <span className="font-semibold">Phone:</span> {hospital.phoneNumber || "Not available"}
-          </p>
-          <div className="mt-2">
-            <span className="font-semibold">Services:</span> 
-            <p className="mt-1">{hospital.services?.join(", ") || "Information not available"}</p>
-          </div>
-          <p className="mt-2">
-            <span className="font-semibold">Open Hours:</span> {hospital.openingHours || "Information not available"}
-          </p>
-        </div>
-      </div>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="mb-8"
+      >
+        <Card>
+          <CardHeader className="flex flex-row items-center space-x-4 bg-primary/10">
+            <Hospital className="h-10 w-10 text-primary" />
+            <div>
+              <CardTitle className="text-3xl font-bold text-primary">
+                {hospital.name}
+              </CardTitle>
+              <p className="text-muted-foreground">{hospital.address}</p>
+            </div>
+          </CardHeader>
+         
+        </Card>
+      </motion.div>
 
       {/* Doctors Section */}
-      <div className="bg-white rounded-lg shadow-lg p-6">
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">Available Doctors</h2>
-        
-        {doctors.length > 0 ? (
-          <div className="grid gap-6 md:grid-cols-2">
-            {doctors.map((doctorData) => {
-              const doctor = doctorData.doctor; // Access the nested doctor object
-              return (
-                <div key={doctor._id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
-                  <div className="flex items-center mb-3">
-                    <div className="bg-blue-100 text-blue-800 p-3 rounded-full mr-3">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                      </svg>
-                    </div>
-                    <h3 className="text-xl font-semibold">{doctor.firstName} {doctor.lastName}</h3>
-                  </div>
-                  
-                  <div className="text-gray-600">
-                    <p className="mb-2">
-                      <span className="font-medium">Specialization:</span> {doctorData.specialization}
-                    </p>
-                    <p className="mb-2">
-                      <span className="font-medium">Email:</span> {doctor.email}
-                    </p>
-                    <p className="mb-2">
-                      <span className="font-medium">Phone:</span> {doctor.phoneNumber || "Not available"}
-                    </p>
-                    <p className="mb-2">
-                      <span className="font-medium">Status:</span> 
-                      <span className={`ml-2 px-2 py-1 rounded text-sm ${doctorData.availability?.currentStatus === "Available" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}>
-                        {doctorData.availability?.currentStatus || "Unknown"}
-                      </span>
-                    </p>
-                    
-                    {doctorData.availability?.timeSlots && doctorData.availability.timeSlots.length > 0 ? (
-                      <div>
-                        <span className="font-medium">Available Times:</span>
-                        <ul className="mt-1 pl-5 list-disc">
-                          {doctorData.availability.timeSlots.map((slot, index) => (
-                            <li key={index}>{slot.start} to {slot.end}</li>
-                          ))}
-                        </ul>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+      >
+        <Card>
+          <CardHeader>
+            <div className="flex items-center space-x-3">
+              <Stethoscope className="h-6 w-6 text-primary" />
+              <CardTitle className="text-2xl">Available Doctors</CardTitle>
+            </div>
+          </CardHeader>
+          <CardContent>
+            {doctors.length > 0 ? (
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {doctors.map((doctorData) => {
+                  const doctor = doctorData.doctor;
+                  return (
+                    <motion.div
+                      key={doctor._id}
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.3 }}
+                      className="border border-border rounded-lg p-4 bg-background hover:shadow-md transition-shadow"
+                    >
+                      <div className="flex items-center mb-4">
+                        <div className="bg-primary/10 p-3 rounded-full mr-4">
+                          <User className="h-6 w-6 text-primary" />
+                        </div>
+                        <div>
+                          <h3 className="text-xl font-semibold">
+                            {doctor.name}
+                          </h3>
+                          <p className="text-sm text-muted-foreground">
+                            {doctorData.specialization}
+                          </p>
+                        </div>
                       </div>
-                    ) : (
-                      <p className="italic text-gray-500">No specific time slots available</p>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        ) : (
-          <div className="text-center py-10 bg-gray-50 rounded">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mx-auto text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
-            </svg>
-            <p className="mt-2 text-gray-500">No doctors are currently registered with this hospital.</p>
-          </div>
-        )}
-      </div>
+                      
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm font-medium text-muted-foreground">
+                            Availability
+                          </span>
+                          
+                           
+                          <button
+                            className={`flex items-center px-3 py-1.5 text-sm rounded-md hover:bg-opacity-15
+                              ${doctorData.availability?.currentStatus === "Available" 
+                                ? "bg-green-500 text-white" 
+                                : "bg-red-500 text-white"}`}
+                          >
+                            {doctorData.availability?.currentStatus || "Unknown"}
+                          </button>
+
+                          
+                        </div>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="text-center py-10 bg-secondary/20 rounded-lg border border-dashed border-border">
+                <Stethoscope className="h-12 w-12 mx-auto text-muted-foreground" />
+                <p className="mt-4 text-muted-foreground">
+                  No doctors are currently registered with this hospital.
+                </p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </motion.div>
+
+      <Button className="flex items-center ml-96 mt-8"
+      onClick={() => navigate(-1)}
+      >
+        Go Back
+      </Button>
     </div>
   );
+
 };
 
 export default ViewDetails;

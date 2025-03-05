@@ -72,33 +72,40 @@ const SearchBar = ({ onSelectLocation }) => {
     <div className="flex flex-col items-center justify-center h-24 w-full px-4">
       {/* Search Bar Container */}
       <div className="relative flex items-center w-full max-w-2xl">
-        <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
+        <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
         <input
           type="text"
           value={query}
           onChange={handleInputChange}
           placeholder="Search for hospitals..."
-          className="w-full p-4 pl-12 pr-4 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-md transition-all"
+          className="w-full p-4 pl-12 pr-4 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-md transition-all duration-200 text-gray-700 placeholder-gray-400 bg-white hover:shadow-lg"
+          aria-label="Search for hospitals"
         />
         <button
           onClick={() => fetchSuggestions(query)}
-          className="ml-2 px-5 py-3 bg-blue-600 text-white font-semibold rounded-full shadow-md hover:bg-blue-700 transition-all"
+          className="ml-3 px-6 py-3 bg-blue-600 text-white font-semibold rounded-full shadow-md hover:bg-blue-700 hover:shadow-lg active:bg-blue-800 active:scale-95 transition-all duration-200 flex items-center justify-center"
+          aria-label="Search"
         >
-          Search
+          <span>Search</span>
         </button>
   
         {/* Suggestion Dropdown (Positioned Absolutely) */}
         {query.trim() !== "" && suggestions.length > 0 && (
-          <ul className="absolute top-full left-0 w-full bg-white bg-opacity-90 shadow-lg rounded-lg mt-1 max-h-60 overflow-y-auto z-50">
+          <ul 
+            className="absolute top-full left-0 w-full bg-white bg-opacity-95 backdrop-blur-sm shadow-xl rounded-2xl mt-2 max-h-60 overflow-y-auto z-50 border border-gray-100 divide-y divide-gray-100"
+            role="listbox"
+          >
             {suggestions.map((place, index) => (
               <li
                 key={index}
                 onClick={() => handleSelect(place)}
-                className="p-3 cursor-pointer hover:bg-gray-200 transition-all"
+                className="p-3.5 cursor-pointer hover:bg-blue-50 transition-all duration-150 flex flex-col"
+                role="option"
+                aria-selected="false"
               >
-                <strong>{place.name}</strong>
+                <strong className="text-gray-800 font-medium">{place.name}</strong>
                 {place.address && (
-                  <span className="text-sm text-gray-600"> - {place.address}</span>
+                  <span className="text-sm text-gray-500 mt-0.5 truncate">{place.address}</span>
                 )}
               </li>
             ))}
