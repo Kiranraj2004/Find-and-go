@@ -13,12 +13,12 @@ const registerDoctor = async (req, res) => {
 
     res.status(200).json({ success: true, doctor });
   } catch (error) {
-    res.status(500).json({ success: false, error: "Server Error" });
+    console.error("Error registering doctor:", error);
+    res.status(500).json({ success: false, error: "Error registering doctor", details: error.message });
   }
 };
 
 // 2️⃣ Register Doctor to Hospital
-
 
 // 3️⃣ Get Doctor Data
 const getDoctor = async (req, res) => {
@@ -28,20 +28,20 @@ const getDoctor = async (req, res) => {
 
     res.status(200).json({ success: true, doctor });
   } catch (error) {
-    res.status(500).json({ success: false, error: "Server Error" });
+    console.error("Error retrieving doctor data:", error);
+    res.status(500).json({ success: false, error: "Error retrieving doctor data", details: error.message });
   }
 };
 
 const checkdoctor = async (req, res) => {
-    const email = req.params.email;
-    try{
-        let doctor = await Doctor.findOne({ email });
-        res.json({ exists:!!doctor, doctor: doctor });
-    }
-    catch(error){
-        console.error("Error checking doctor:", error);
-        res.status(500).json({ message: "Server error" });
-    }
+  const email = req.params.email;
+  try {
+    let doctor = await Doctor.findOne({ email });
+    res.json({ exists: !!doctor, doctor: doctor });
+  } catch (error) {
+    console.error("Error checking doctor:", error);
+    res.status(500).json({ message: "Error checking doctor", details: error.message });
+  }
 }
 
 module.exports = { registerDoctor, getDoctor, checkdoctor };

@@ -1,6 +1,5 @@
 const Admin = require("../models/Admin");
 
-
 const registerAdmin = async (req, res) => {
   const { email } = req.body;
   // console.log(email);
@@ -14,7 +13,8 @@ const registerAdmin = async (req, res) => {
 
     res.status(201).json({ message: "Admin registered successfully", admin });
   } catch (error) {
-    res.status(500).json({ message: "Error registering admin", error });
+    console.error("Error registering admin:", error);
+    res.status(500).json({ message: "Error registering admin", error: error.message });
   }
 };
 
@@ -25,13 +25,11 @@ const checkadmin = async (req, res) => {
   try {
     let admin = await Admin.findOne({ email });
     // console.log(admin);
-    res.json({ exists: !!admin,
-      admin: admin
-    });
+    res.json({ exists: !!admin, admin: admin });
   } catch (error) {
-    console.error("Error checking hospital:", error);
-    res.status(500).json({ error: "Internal server error" });
+    console.error("Error checking admin:", error);
+    res.status(500).json({ message: "Error checking admin", error: error.message });
   }
 }
 
-module.exports = { registerAdmin,checkadmin };
+module.exports = { registerAdmin, checkadmin };

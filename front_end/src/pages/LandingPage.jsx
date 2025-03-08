@@ -21,8 +21,9 @@ const LandingPage = () => {
       opacity: 1, 
       y: 0,
       transition: { 
-        duration: 1, // Increased duration
-        ease: "easeOut" // Smoother easing
+        duration: 1.5, // Increased duration
+        ease: "easeInOut", // Smoother easing
+        delay: 0.2 // Added delay
       }
     }
   };
@@ -112,8 +113,10 @@ const LandingPage = () => {
         <div className="container mx-auto px-4 py-4 flex justify-between items-center cursor-pointer"
         >
           <motion.h1 
+            variants={slowVariants}
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.4 }} // Added delay for staggered effect
             className="text-2xl font-bold text-primary"
           >
             Find and Go
@@ -135,19 +138,25 @@ const LandingPage = () => {
         variants={slowVariants}
         initial="hidden"
         animate="visible"
-        className=" mt-24  flex flex-col items-center justify-center bg-gradient-to-b from-background to-background/95 "
+        className="mt-24 flex flex-col items-center justify-center bg-gradient-to-b from-background to-background/95"
       >
         <div className="absolute inset-0 bg-grid-white/[0.02]" />
         <div className="container mx-auto mt-0 text-center">
           <motion.h1 
             variants={slowVariants}
+            initial="hidden"
+            animate="visible"
+            transition={{ delay: 0.4 }} // Added delay for staggered effect
             className="text-5xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80"
           >
             Your Health, Your Time - No More Waiting
           </motion.h1>
           <motion.p 
             variants={slowVariants}
-            className="text-lg md:text-xl  text-muted-foreground max-w-2xl mx-auto"
+            initial="hidden"
+            animate="visible"
+            transition={{ delay: 0.6 }} // Added delay for staggered effect
+            className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto"
           >
             Say goodbye to long waiting times – know your doctor's availability in advance.
           </motion.p>

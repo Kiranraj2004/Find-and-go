@@ -44,10 +44,10 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-app.use((req, res, next) => {
-    console.log(`Incoming ${req.method} request to ${req.url}`);
-    next();
-  });
+// app.use((req, res, next) => {
+//     console.log(`Incoming ${req.method} request to ${req.url}`);
+//     next();
+//   });
 
 
 app.use("/api/admin", adminRoutes);
