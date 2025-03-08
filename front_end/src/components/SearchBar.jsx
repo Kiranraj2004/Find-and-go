@@ -81,18 +81,22 @@ const SearchBar = ({ onSelectLocation }) => {
           className="w-full p-4 pl-12 pr-4 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-md transition-all duration-200 text-gray-700 placeholder-gray-400 bg-white hover:shadow-lg"
           aria-label="Search for hospitals"
         />
-        <button
-          onClick={() => fetchSuggestions(query)}
-          className="ml-3 px-6 py-3 bg-blue-600 text-white font-semibold rounded-full shadow-md hover:bg-blue-700 hover:shadow-lg active:bg-blue-800 active:scale-95 transition-all duration-200 flex items-center justify-center"
-          aria-label="Search"
-        >
-          <span>Search</span>
-        </button>
-  
-        {/* Suggestion Dropdown (Positioned Absolutely) */}
+      
+
+        {/* No Results Message */}
+        {query.trim() !== "" && (
+          <div
+            
+            className="absolute top-full left-0 w-full text-center text-sm text-muted-foreground text-rose-500"
+          >
+            * Hospital not found? You can locate it directly on the map below
+          </div>
+        )}
+
+        {/* Suggestions Dropdown */}
         {query.trim() !== "" && suggestions.length > 0 && (
           <ul 
-            className="absolute top-full left-0 w-full bg-white bg-opacity-95 backdrop-blur-sm shadow-xl rounded-2xl mt-2 max-h-60 overflow-y-auto z-50 border border-gray-100 divide-y divide-gray-100"
+            className="absolute top-full mt-5 left-0 w-full bg-white bg-opacity-95 backdrop-blur-sm shadow-xl rounded-2xl mt-2 max-h-60 overflow-y-auto z-50 border border-gray-100 divide-y divide-gray-100"
             role="listbox"
           >
             {suggestions.map((place, index) => (

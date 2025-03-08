@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { AdminLoadingSkeleton } from "./ui/AdminSkeleton";
 
 const AdminDashboard = () => {
   const location = useLocation();

@@ -25,6 +25,8 @@ import {
 } from 'lucide-react';
 
 
+import { ViewDetailsSkeleton } from "@/components/ui/viewdetailskeleton"
+
 const ViewDetails = () => {
   const location = useLocation();
   const { hospitalId } = useParams(); // Get hospitalId from the URL
@@ -77,11 +79,7 @@ const ViewDetails = () => {
     fetchData();
   }, [hospitalId]);
 
-  if (loading) return (
-    <div className="flex justify-center items-center min-h-screen">
-      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-    </div>
-  );
+  if (loading) return <ViewDetailsSkeleton />;
 
   if (error) return <div className="p-10 text-red-500">{error}</div>;
   if (!hospital) return <div className="p-10">Hospital information not available</div>;

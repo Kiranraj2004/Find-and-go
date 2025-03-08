@@ -6,6 +6,7 @@ import { useAuth0 } from "@auth0/auth0-react"
 import { Bell, Hospital, UserPlus, X, CheckCircle, XCircle, Trash2, ToggleLeft, ToggleRight } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
+import { LoadingSkeleton } from "@/components/ui/skeleton"
 import { useNavigate } from "react-router-dom"
 
 
@@ -202,13 +203,8 @@ const DoctorDashboard = () => {
   }
 
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
-      </div>
-    )
+    return <LoadingSkeleton />
   }
-
   if (!doctor) {
     return (
       <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
@@ -515,18 +511,24 @@ const DoctorDashboard = () => {
         </motion.div>
       </div>
 
-      <motion.button
-              whileHover={{ scale: 1.05, boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)" }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-secondary hover:bg-secondary/90 text-secondary-foreground px-6 py-3 rounded-lg transition-all duration-200 font-medium flex items-center"
-              onClick={() => navigate(-1)}
-            >
-              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-              </svg>
-              Go Back
-            </motion.button>
-    </motion.div>
+      
+
+        <motion.button
+          whileHover={{ scale: 1.05, boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)" }}
+          whileTap={{ scale: 0.95 }}
+          className="mt-6 mb-4 bg-secondary hover:bg-secondary/90 text-secondary-foreground px-6 py-3 rounded-lg transition-all duration-200 font-medium flex items-center"
+          onClick={() => navigate(-1)}
+        >
+          <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Go Back
+        </motion.button>
+
+
+
+</motion.div>
+    
 
   )
 }
