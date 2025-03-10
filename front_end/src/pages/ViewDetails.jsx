@@ -26,7 +26,6 @@ import {
 
 
 import { ViewDetailsSkeleton } from "@/components/ui/viewdetailskeleton"
-import SEO from '@/components/SEO';
 
 const ViewDetails = () => {
   const location = useLocation();

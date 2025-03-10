@@ -1,7 +1,5 @@
 {
-  "name": "find-and-go",
-  "description": "A healthcare platform to find doctors and hospitals",
-  "version": "1.0.0",
+  "name": "front_end",
   "private": true,
   "version": "0.0.0",
   "type": "module",

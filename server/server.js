@@ -48,7 +48,9 @@ app.use(cors({
 //     console.log(`Incoming ${req.method} request to ${req.url}`);
 //     next();
 //   });
-
+  app.get("/warmup", (req, res) => {
+    res.status(200).json({ message: "Server is active" });
+  });
 
 app.use("/api/admin", adminRoutes);
 
