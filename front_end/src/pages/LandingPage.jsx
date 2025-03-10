@@ -7,6 +7,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/button";
 import { Card } from "../components/ui/card";
+import { AdminLoadingSkeleton } from "@/components/ui/AdminSkeleton";
 
 const LandingPage = () => {
   const [selectedLocation, setSelectedLocation] = useState(null);

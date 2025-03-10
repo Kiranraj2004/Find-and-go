@@ -14,7 +14,6 @@ import { LogOut } from "lucide-react";
 const AuthButton = () => {
   const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  console.log(user);
 
   return isAuthenticated ? (
     <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>

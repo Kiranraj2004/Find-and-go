@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://find-and-go.vercel.app/

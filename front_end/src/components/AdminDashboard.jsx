@@ -239,24 +239,7 @@ const AdminDashboard = () => {
           </motion.div>
   
           {isLoading ? (
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="flex justify-center items-center h-64"
-            >
-              <div className="relative">
-                <motion.div 
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
-                  className="w-16 h-16 border-4 border-primary/30 rounded-full"
-                />
-                <motion.div 
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                  className="absolute top-0 left-0 w-16 h-16 border-4 border-t-primary border-r-transparent border-b-transparent border-l-transparent rounded-full"
-                />
-              </div>
-            </motion.div>
+           <AdminLoadingSkeleton></AdminLoadingSkeleton>
           ) : (
             <>
               {hospitalId && (

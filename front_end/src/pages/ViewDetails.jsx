@@ -26,6 +26,7 @@ import {
 
 
 import { ViewDetailsSkeleton } from "@/components/ui/viewdetailskeleton"
+import SEO from '@/components/SEO';
 
 const ViewDetails = () => {
   const location = useLocation();
@@ -198,11 +199,28 @@ const ViewDetails = () => {
         </Card>
       </motion.div>
 
-      <Button className="flex items-center ml-96 mt-8"
-      onClick={() => navigate(-1)}
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.4 }}
+        className="flex justify-center mt-8 mb-4"
       >
-        Go Back
-      </Button>
+        <Button
+          variant="outline"
+          className="group flex items-center space-x-2 hover:bg-primary hover:text-primary-foreground transition-all duration-200"
+          onClick={() => navigate(-1)}
+        >
+          <svg 
+            className="w-5 h-5 transform group-hover:-translate-x-1 transition-transform duration-200" 
+            fill="none" 
+            stroke="currentColor" 
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          <span>Go Back</span>
+        </Button>
+      </motion.div>
     </div>
   );
 
